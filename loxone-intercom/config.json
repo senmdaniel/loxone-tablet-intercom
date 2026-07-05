@@ -7,7 +7,7 @@
   "startup": "services",
   "boot": "auto",
   "ports": {
-    "5062/udp": 5062,
+    "5062/udp": 5060,
     "8080/tcp": 8080
   },
   "options": {},
