@@ -1,4 +1,5 @@
-FROM alpine:latest
+# We gebruiken Alpine 3.18 omdat deze Asterisk 20 bevat (de laatste versie met chan_sip ondersteuning)
+FROM alpine:3.18
 
 # 1. Installeer Asterisk, Python, Flask, Bash en tijdzone-ondersteuning
 RUN apk add --no-cache asterisk python3 py3-flask bash curl tzdata
