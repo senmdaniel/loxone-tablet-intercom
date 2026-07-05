@@ -7,7 +7,7 @@ echo "Europe/Brussels" > /etc/timezone
 echo "⏰ Systeemtijd gesynchroniseerd: $(date)"
 
 echo "📞 Asterisk SIP server wordt gestart..."
-# Start Asterisk onder de juiste gebruiker
+# Start Asterisk onder de juiste v20/v18 gebruiker op Debian
 /usr/sbin/asterisk -U asterisk -f &
 
 # Wacht tot Asterisk is opgestart
