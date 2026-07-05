@@ -1,18 +1,18 @@
-FROM alpine:3.18
+# We gebruiken Ubuntu/Debian als stabiele basis (voorkomt missende pakketfouten)
+FROM debian:bookworm-slim
 
-# 1. Installeer Asterisk EN alle noodzakelijke netwerk/SIP/audio modules
-RUN apk add --no-cache \
+# 1. Installeer Asterisk en Python in één compleet pakket
+RUN apt-get update && apt-get install -y \
     asterisk \
-    asterisk-sip \
-    asterisk-confbridge \
-    asterisk-sounds-en \
     python3 \
-    py3-flask \
+    python3-flask \
     bash \
     curl \
-    tzdata
+    tzdata \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
-# 2. Maak de benodigde mappen aan
+# 2. Maak de benodigde systeemmappen aan
 RUN mkdir -p /etc/asterisk /var/spool/asterisk/outgoing /var/run/asterisk /var/log/asterisk
 
 # 3. Kopieer jouw eigen configuratiebestanden
@@ -22,7 +22,7 @@ COPY sip.conf /etc/asterisk/sip.conf
 COPY extensions.conf /etc/asterisk/extensions.conf
 COPY modules.conf /etc/asterisk/modules.conf
 
-# 4. Genereer direct de missende master-bestanden die Asterisk eist
+# 4. Genereer direct de verplichte master-bestanden die Asterisk eist
 RUN echo -e "[options]\nverbose = 3\ndebug = 3\nnofork = yes" > /etc/asterisk/asterisk.conf \
     && echo -e "[default_user]\ntype=user\n\n[default_bridge]\ntype=bridge" > /etc/asterisk/confbridge.conf \
     && echo -e "[general]\ncountry=nl" > /etc/asterisk/indications.conf \
