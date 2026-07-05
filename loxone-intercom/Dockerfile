@@ -1,6 +1,6 @@
 FROM debian:bookworm-slim
 
-# 1. Installeer Asterisk, Python, Flask en dos2unix om Windows-fouten te repareren
+# 1. Installeer Asterisk, Python en Flask
 RUN apt-get update && apt-get install -y \
     asterisk \
     python3 \
@@ -8,11 +8,10 @@ RUN apt-get update && apt-get install -y \
     bash \
     curl \
     tzdata \
-    dos2unix \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# 2. Kopieer alle bestanden naar de container
+# 2. Kopieer alle configuratiebestanden rechtstreeks naar de container
 COPY run.sh /run.sh
 COPY app.py /app.py
 COPY sip.conf /etc/asterisk/sip.conf
@@ -22,8 +21,7 @@ COPY asterisk.conf /etc/asterisk/asterisk.conf
 COPY confbridge.conf /etc/asterisk/confbridge.conf
 COPY logger.conf /etc/asterisk/logger.conf
 
-# 3. Herstel de Windows-regeleinden geforceerd en maak het script uitvoerbaar
-RUN dos2unix /run.sh /app.py \
-    && chmod +x /run.sh
+# 3. Maak het startscript uitvoerbaar
+RUN chmod +x /run.sh
 
 CMD [ "/run.sh" ]
