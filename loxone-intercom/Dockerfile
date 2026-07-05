@@ -1,7 +1,7 @@
 FROM alpine:latest
 
-# 1. Installeer Asterisk, Python, Flask en Bash
-RUN apk add --no-cache asterisk python3 py3-flask bash curl
+# 1. Installeer Asterisk, Python, Flask, Bash en tijdzone-ondersteuning
+RUN apk add --no-cache asterisk python3 py3-flask bash curl tzdata
 
 # 2. Maak de configuratiemap aan
 RUN mkdir -p /etc/asterisk
