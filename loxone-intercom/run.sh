@@ -6,11 +6,15 @@ ln -sf /usr/share/zoneinfo/Europe/Brussels /etc/localtime
 echo "Europe/Brussels" > /etc/timezone
 echo "⏰ Systeemtijd gesynchroniseerd: $(date)"
 
-echo "📞 Asterisk SIP server wordt gestart..."
-# Start Asterisk onder de juiste v20/v18 gebruiker op Debian
-/usr/sbin/asterisk -U asterisk -f &
+# Maak live de benodigde spool-map aan voor Loxone call-files
+mkdir -p /var/spool/asterisk/outgoing
+chmod -R 777 /var/spool/asterisk/outgoing
 
-# Wacht tot Asterisk is opgestart
+echo "📞 Asterisk SIP server wordt gestart..."
+# Start Asterisk gewoon op de achtergrond
+/usr/sbin/asterisk -f &
+
+# Geef Asterisk 3 seconden de tijd om rustig op te starten
 sleep 3
 
 echo "🌐 Flask REST API wordt gestart..."
